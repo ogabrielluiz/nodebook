@@ -141,7 +141,7 @@ class Nodebook(object):
             else:
                 # re-run the parent if it wasn't valid
                 # TODO: synchronize output with frontend javascript
-                print "auto-running invalidated node N_%s (%s)" % (node.get_index() + 1, node.name)
+                print ("auto-running invalidated node N_%s (%s)" % (node.get_index() + 1, node.name))
                 self.run_node(node.name)
                 return self._find_latest_output(node, var)
         else:
@@ -262,7 +262,7 @@ class Node(object):
         rf.visit(tree)
         self.inputs = {x: None for x in rf.inputs}
         self.imports = rf.imports
-        self.valid = False  # not valid until executed
+        self.valid = False  # not valid until  cuted
 
     def run(self, input_objs, input_hashes):
         """
@@ -274,10 +274,10 @@ class Node(object):
         block = ast.parse(self.code)
         if len(block.body) > 0 and type(block.body[-1]) is ast.Expr:
             last = ast.Expression(block.body.pop().value)
-            exec compile(block, '<string>', mode='exec') in env
+            exec(compile(block, '<string>', mode='exec')) in env
             res = eval(compile(last, '<string>', mode='eval'), env)
         else:
-            exec compile(block, '<string>', mode='exec') in env
+            exec(compile(block, '<string>', mode='exec')) in env
             res = None
 
         # find outputs which have changed from input hashes
